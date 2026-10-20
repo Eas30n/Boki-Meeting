@@ -3,7 +3,7 @@ services:
     image: ${MYSQL_IMAGE:-mysql:8.4}
     container_name: xunzhi-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-123456}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:?请先在 .env 中设置 MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-mainshi_agent}
     ports:
       - "3306:3306"
@@ -18,7 +18,7 @@ services:
       - ./admin/src/main/resources/sql/ai_properties.sql:/docker-entrypoint-initdb.d/04-ai_properties.sql:ro
       - ./admin/src/main/resources/sql/t_user.sql:/docker-entrypoint-initdb.d/05-t_user.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p${MYSQL_PASSWORD:-123456}"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -p${MYSQL_PASSWORD}"]
       interval: 15s
       timeout: 5s
       retries: 10
@@ -72,7 +72,7 @@ services:
       MYSQL_PORT: 3306
       MYSQL_DATABASE: ${MYSQL_DATABASE:-mainshi_agent}
       MYSQL_USERNAME: ${MYSQL_USERNAME:-root}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-123456}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?请先在 .env 中设置 MYSQL_PASSWORD}
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017
       MONGODB_DATABASE: ${MONGODB_DATABASE:-xunzhi_agent}
